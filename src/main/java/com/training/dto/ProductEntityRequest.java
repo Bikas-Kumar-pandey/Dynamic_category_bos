@@ -16,3 +16,5 @@ public class ProductEntityRequest {
     private List<Object> features;
     private CategoryDocument.Camera camera;
 }
+
+
