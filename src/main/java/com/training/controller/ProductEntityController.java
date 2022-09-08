@@ -24,9 +24,9 @@ public class ProductEntityController {
         return productEntityService.setProducts(request);
     }
 
-    @GetMapping("/{productId}")
-    public ProductResponse getProductById(@PathVariable int productId) throws Exception {
-        return productEntityService.getProductById(productId);
+    @GetMapping("/{product_Id}")
+    public ProductResponse getProductById(@PathVariable int product_Id) throws Exception {
+        return productEntityService.getProductById(product_Id);
     }
 
 
@@ -35,15 +35,13 @@ public class ProductEntityController {
         return productEntityService.getAllProducts();
     }
 
-    @PutMapping("/{productId}")
-    public String updateProduct(@RequestBody ProductEntityUpdate request, @PathVariable int productId) throws Exception {
-        return productEntityService.updateProduct(request, productId);
+    @PutMapping("/{product_Id}")
+    public String updateProduct(@RequestBody ProductEntityUpdate request, @PathVariable int product_Id) throws Exception {
+        return productEntityService.updateProduct(request, product_Id);
     }
 
-    @DeleteMapping("/{productId}")
-    public String deleteById(@PathVariable int productId) throws Exception {
-        return productEntityService.deleteById(productId);
+    @DeleteMapping("/{product_Id}")
+    public String deleteById(@PathVariable int product_Id) throws Exception {
+        return productEntityService.deleteById(product_Id);
     }
-
-
 }

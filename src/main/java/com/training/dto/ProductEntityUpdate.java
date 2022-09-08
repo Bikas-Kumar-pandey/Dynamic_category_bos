@@ -11,7 +11,6 @@ public class ProductEntityUpdate {
     String model;
     String ram;
     String storage;
-//    private int productId;
     private List<Object> features;
     private CategoryDocument.Camera camera;
 }

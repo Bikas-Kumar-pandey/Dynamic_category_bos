@@ -8,6 +8,7 @@ import com.training.model.ProductEntity;
 import com.training.repository.CategoryDocumentRepository;
 import com.training.repository.ProductEntityRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,21 +18,23 @@ import java.util.Optional;
 public class ProductEntityService {
     private final ProductEntityRepository productRepo;
     private final CategoryDocumentRepository categoryDocumentRepository;
+    @Autowired
+    private ModelMapper modelMapper;
 
-    public ProductEntityService(ProductEntityRepository productRepo, CategoryDocumentRepository categoryDocumentRepository) {
+    public ProductEntityService(ProductEntityRepository productRepo, CategoryDocumentRepository categoryDocumentRepository, ModelMapper modelMapper) {
         this.productRepo = productRepo;
         this.categoryDocumentRepository = categoryDocumentRepository;
+        this.modelMapper = modelMapper;
     }
 
     public ProductResponse setProducts(ProductEntityRequest request) {
-        ModelMapper modelMapper = new ModelMapper();
-
         ProductEntity saveProductEntity = modelMapper.map(request, ProductEntity.class);
         CategoryDocument categoryDoc = modelMapper.map(request, CategoryDocument.class);
 
         ProductEntity savedProduct = productRepo.save(saveProductEntity);
 
-        categoryDoc.setProductId(savedProduct.getProductId());
+        categoryDoc.setProductId(savedProduct.getProduct_Id());
+
         CategoryDocument savedCategory = categoryDocumentRepository.save(categoryDoc);
 
         ProductResponse productResponse = new ProductResponse();
@@ -40,8 +43,8 @@ public class ProductEntityService {
         return productResponse;
     }
 
-    public ProductResponse getProductById(int productId) throws Exception {
-        Optional<CategoryDocument> categoryById = categoryDocumentRepository.findByproductId(productId);
+    public ProductResponse getProductById(int product_Id) throws Exception {
+        Optional<CategoryDocument> categoryById = categoryDocumentRepository.findByProductId(product_Id);
 
         if (categoryById.isEmpty()) {
             throw new Exception("Product By Given id is not present");
@@ -60,11 +63,11 @@ public class ProductEntityService {
         return categoryDocumentRepository.findAll();
     }
 
-    public String updateProduct(ProductEntityUpdate request, int productId) throws Exception {
-        Optional<ProductEntity> productById = productRepo.findById(productId);
-        Optional<CategoryDocument> categoryById = categoryDocumentRepository.findByproductId(productId);
+    public String updateProduct(ProductEntityUpdate request, int product_Id) throws Exception {
+        Optional<ProductEntity> productById = productRepo.findById(product_Id);
+        Optional<CategoryDocument> categoryById = categoryDocumentRepository.findByProductId(product_Id);
         if (!productById.isPresent() || !categoryById.isPresent()) {
-            throw new Exception("No Products present by given id " + productId);
+            throw new Exception("No Products present by given id " + product_Id);
         }
 
         CategoryDocument categoryDocument = categoryById.get();
@@ -80,15 +83,17 @@ public class ProductEntityService {
         return "saved";
     }
 
-    public String deleteById(int productId) throws Exception {
-        Optional<ProductEntity> products = productRepo.findById(productId);
-        Optional<CategoryDocument> category = categoryDocumentRepository.findByproductId(productId);
+    public String deleteById(int product_Id) throws Exception {
+        Optional<ProductEntity> products = productRepo.findById(product_Id);
+        Optional<CategoryDocument> category = categoryDocumentRepository.findByProductId(product_Id);
         if (products.isEmpty() || category.isEmpty()) {
-            throw new Exception("No Products present by given id " + productId);
+            throw new Exception("No Products present by given id " + product_Id);
         }
 
-        productRepo.deleteById(productId);
-        categoryDocumentRepository.deleteByProductId(productId);
-        return "Deleted Succesfully Product with given id: " + productId;
+        productRepo.deleteById(product_Id);
+        categoryDocumentRepository.deleteByProductId(product_Id);
+        return "Deleted Succesfully Product with given id: " + product_Id;
     }
+
+
 }

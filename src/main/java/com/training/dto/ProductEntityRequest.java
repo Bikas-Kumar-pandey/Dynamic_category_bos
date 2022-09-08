@@ -1,13 +1,16 @@
 package com.training.dto;
 
 import com.training.model.CategoryDocument;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.List;
 
-@Getter
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 public class ProductEntityRequest {
-    private int productId;
+
     String brand;
     String model;
     String ram;
@@ -15,6 +18,8 @@ public class ProductEntityRequest {
 
     private List<Object> features;
     private CategoryDocument.Camera camera;
+
+
 }
 
 

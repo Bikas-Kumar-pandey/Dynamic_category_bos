@@ -5,7 +5,7 @@ import com.training.model.CategoryDocument;
 import java.util.List;
 
 public interface ProductResponses {
-    int productId();
+    int product_Id();
 
     String brand();
 

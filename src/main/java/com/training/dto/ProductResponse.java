@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ProductResponse {
     private int productId;
     String brand;
