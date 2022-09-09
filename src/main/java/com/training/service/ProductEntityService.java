@@ -8,7 +8,6 @@ import com.training.model.ProductEntity;
 import com.training.repository.CategoryDocumentRepository;
 import com.training.repository.ProductEntityRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,8 +17,7 @@ import java.util.Optional;
 public class ProductEntityService {
     private final ProductEntityRepository productRepo;
     private final CategoryDocumentRepository categoryDocumentRepository;
-    @Autowired
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public ProductEntityService(ProductEntityRepository productRepo, CategoryDocumentRepository categoryDocumentRepository, ModelMapper modelMapper) {
         this.productRepo = productRepo;
@@ -28,18 +26,24 @@ public class ProductEntityService {
     }
 
     public ProductResponse setProducts(ProductEntityRequest request) {
-        ProductEntity saveProductEntity = modelMapper.map(request, ProductEntity.class);
-        CategoryDocument categoryDoc = modelMapper.map(request, CategoryDocument.class);
+        ProductResponse productResponse=null;
+        try {
 
-        ProductEntity savedProduct = productRepo.save(saveProductEntity);
+            ProductEntity saveProductEntity = modelMapper.map(request, ProductEntity.class);
+            CategoryDocument categoryDoc = modelMapper.map(request, CategoryDocument.class);
 
-        categoryDoc.setProductId(savedProduct.getProduct_Id());
+            ProductEntity savedProduct = productRepo.save(saveProductEntity);
 
-        CategoryDocument savedCategory = categoryDocumentRepository.save(categoryDoc);
+            categoryDoc.setProductId(savedProduct.getProduct_Id());
 
-        ProductResponse productResponse = new ProductResponse();
+            CategoryDocument savedCategory = categoryDocumentRepository.save(categoryDoc);
 
-        modelMapper.map(savedCategory, productResponse);
+            productResponse = modelMapper.map(savedCategory, ProductResponse.class);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+        }
         return productResponse;
     }
 
@@ -51,7 +55,7 @@ public class ProductEntityService {
         }
         CategoryDocument category = categoryById.get();
 
-        ModelMapper modelMapper = new ModelMapper();
+//        ModelMapper modelMapper = new ModelMapper();
         ProductResponse productResponse = new ProductResponse();
         modelMapper.map(category, productResponse);
 
@@ -72,7 +76,7 @@ public class ProductEntityService {
 
         CategoryDocument categoryDocument = categoryById.get();
         ProductEntity product = productById.get();
-        ModelMapper modelMapper = new ModelMapper();
+//        ModelMapper modelMapper = new ModelMapper();
         modelMapper.map(request, product);
         modelMapper.map(request, categoryDocument);
 
@@ -96,4 +100,18 @@ public class ProductEntityService {
     }
 
 
+    public ProductEntityRequest setProductss(ProductEntityRequest request) {
+        ProductEntityRequest map = null;
+        try {
+            
+            ModelMapper mapper = new ModelMapper();
+
+            ProductEntity saveProductEntity = mapper.map(request, ProductEntity.class);
+            ProductEntity savedProduct = productRepo.save(saveProductEntity);
+      map = mapper.map(savedProduct, ProductEntityRequest.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return map;
+    }
 }

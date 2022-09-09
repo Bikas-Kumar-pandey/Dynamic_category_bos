@@ -43,5 +43,11 @@ public class ProductEntityController {
     @DeleteMapping("/{product_Id}")
     public String deleteById(@PathVariable int product_Id) throws Exception {
         return productEntityService.deleteById(product_Id);
+
+    }
+
+    @PostMapping
+    public ProductEntityRequest setProductss(@RequestBody ProductEntityRequest request){
+        return productEntityService.setProductss(request);
     }
 }

@@ -28,7 +28,7 @@
 //    public void ProductEntityRepoTest() {
 //        ProductEntityRequest request = new ProductEntityRequest(1, "redmi", "note 3", "86", "4", Collections.singletonList("10px * 50px"), camera);
 //        ProductEntity product = new ProductEntity(1, "redmi", "note 3", "86", "4");
-////        CategoryDocument document = new CategoryDocument(1, "redmi", "note 3", "86", "4", "10px * 50px", camera);
+//        CategoryDocument document = new CategoryDocument(1, "redmi", "note 3", "86", "4", "10px * 50px", camera);
 //        CategoryDocument save = categoryDocumentRepository.save(document);
 //        Assertions.assertThat(request).isEqualTo(document);
 //// when(productEntityRepository.save(product)).thenReturn(product);
